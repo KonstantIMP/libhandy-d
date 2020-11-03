@@ -1,1 +1,2 @@
-girtod --use-runtime-linker
+#!/bin/bash
+dub --root=gir-to-d -- --use-runtime-linker

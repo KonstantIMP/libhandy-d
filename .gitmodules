@@ -1,0 +1,3 @@
+[submodule "gir-to-d"]
+	path = gir-to-d
+	url = https://github.com/gtkd-developers/gir-to-d.git
