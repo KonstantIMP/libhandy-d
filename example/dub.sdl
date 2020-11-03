@@ -1,0 +1,4 @@
+name "example"
+sourceFiles "app.d"
+targetType "executable"
+dependency "d-handy1" path=".."
