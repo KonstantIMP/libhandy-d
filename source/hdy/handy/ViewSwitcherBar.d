@@ -24,6 +24,7 @@ private import gtk.Bin;
 private import gtk.BuildableIF;
 private import gtk.BuildableT;
 private import gtk.Stack;
+private import gtk.Widget;
 private import handy.c.functions;
 public  import handy.c.types;
 
@@ -75,26 +76,14 @@ public class ViewSwitcherBar : Bin
 	 */
 	public this()
 	{
-		auto p = hdy_view_switcher_bar_new();
+		auto __p = hdy_view_switcher_bar_new();
 
-		if(p is null)
+		if(__p is null)
 		{
 			throw new ConstructionException("null returned by new");
 		}
 
-		this(cast(HdyViewSwitcherBar*) p);
-	}
-
-	/**
-	 * Get the icon size of the images used in the #HdyViewSwitcher.
-	 *
-	 * Returns: the icon size of the images
-	 *
-	 * Since: 0.0.10
-	 */
-	public GtkIconSize getIconSize()
-	{
-		return hdy_view_switcher_bar_get_icon_size(hdyViewSwitcherBar);
+		this(cast(HdyViewSwitcherBar*) __p);
 	}
 
 	/**
@@ -130,27 +119,14 @@ public class ViewSwitcherBar : Bin
 	 */
 	public Stack getStack()
 	{
-		auto p = hdy_view_switcher_bar_get_stack(hdyViewSwitcherBar);
+		auto __p = hdy_view_switcher_bar_get_stack(hdyViewSwitcherBar);
 
-		if(p is null)
+		if(__p is null)
 		{
 			return null;
 		}
 
-		return ObjectG.getDObject!(Stack)(cast(GtkStack*) p);
-	}
-
-	/**
-	 * Change the icon size hint for the icons in a #HdyViewSwitcher.
-	 *
-	 * Params:
-	 *     iconSize = the new icon size
-	 *
-	 * Since: 0.0.10
-	 */
-	public void setIconSize(GtkIconSize iconSize)
-	{
-		hdy_view_switcher_bar_set_icon_size(hdyViewSwitcherBar, iconSize);
+		return ObjectG.getDObject!(Stack)(cast(GtkStack*) __p);
 	}
 
 	/**

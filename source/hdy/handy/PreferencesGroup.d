@@ -21,17 +21,16 @@ module handy.PreferencesGroup;
 private import glib.ConstructionException;
 private import glib.Str;
 private import gobject.ObjectG;
-private import gtk.Box;
+private import gtk.Bin;
 private import gtk.BuildableIF;
 private import gtk.BuildableT;
-private import gtk.OrientableIF;
-private import gtk.OrientableT;
+private import gtk.Widget;
 private import handy.c.functions;
 public  import handy.c.types;
 
 
 /** */
-public class PreferencesGroup : Box
+public class PreferencesGroup : Bin
 {
 	/** the main Gtk struct */
 	protected HdyPreferencesGroup* hdyPreferencesGroup;
@@ -56,7 +55,7 @@ public class PreferencesGroup : Box
 	public this (HdyPreferencesGroup* hdyPreferencesGroup, bool ownedRef = false)
 	{
 		this.hdyPreferencesGroup = hdyPreferencesGroup;
-		super(cast(GtkBox*)hdyPreferencesGroup, ownedRef);
+		super(cast(GtkBin*)hdyPreferencesGroup, ownedRef);
 	}
 
 
@@ -77,14 +76,14 @@ public class PreferencesGroup : Box
 	 */
 	public this()
 	{
-		auto p = hdy_preferences_group_new();
+		auto __p = hdy_preferences_group_new();
 
-		if(p is null)
+		if(__p is null)
 		{
 			throw new ConstructionException("null returned by new");
 		}
 
-		this(cast(HdyPreferencesGroup*) p);
+		this(cast(HdyPreferencesGroup*) __p);
 	}
 
 	/**

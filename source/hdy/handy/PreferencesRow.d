@@ -26,6 +26,7 @@ private import gtk.ActionableT;
 private import gtk.BuildableIF;
 private import gtk.BuildableT;
 private import gtk.ListBoxRow;
+private import gtk.Widget;
 private import handy.c.functions;
 public  import handy.c.types;
 
@@ -77,14 +78,14 @@ public class PreferencesRow : ListBoxRow
 	 */
 	public this()
 	{
-		auto p = hdy_preferences_row_new();
+		auto __p = hdy_preferences_row_new();
 
-		if(p is null)
+		if(__p is null)
 		{
 			throw new ConstructionException("null returned by new");
 		}
 
-		this(cast(HdyPreferencesRow*) p);
+		this(cast(HdyPreferencesRow*) __p);
 	}
 
 	/**

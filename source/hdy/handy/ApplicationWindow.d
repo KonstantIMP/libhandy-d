@@ -16,100 +16,72 @@
  * along with d-handy; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110, USA
  */
-module handy.DialerButton;
+module handy.ApplicationWindow;
 
 private import glib.ConstructionException;
-private import glib.Str;
 private import gobject.ObjectG;
-private import gtk.ActionableIF;
-private import gtk.ActionableT;
-private import gtk.ActivatableIF;
-private import gtk.ActivatableT;
+private import gtk.ApplicationWindow : DGtkApplicationWindow = ApplicationWindow;
 private import gtk.BuildableIF;
 private import gtk.BuildableT;
-private import gtk.Button;
 private import gtk.Widget;
 private import handy.c.functions;
 public  import handy.c.types;
 
 
 /** */
-public class DialerButton : Button
+public class ApplicationWindow : DGtkApplicationWindow
 {
 	/** the main Gtk struct */
-	protected HdyDialerButton* hdyDialerButton;
+	protected HdyApplicationWindow* hdyApplicationWindow;
 
 	/** Get the main Gtk struct */
-	public HdyDialerButton* getDialerButtonStruct(bool transferOwnership = false)
+	public HdyApplicationWindow* getHandyApplicationWindowStruct(bool transferOwnership = false)
 	{
 		if (transferOwnership)
 			ownedRef = false;
-		return hdyDialerButton;
+		return hdyApplicationWindow;
 	}
 
 	/** the main Gtk struct as a void* */
 	protected override void* getStruct()
 	{
-		return cast(void*)hdyDialerButton;
+		return cast(void*)hdyApplicationWindow;
 	}
 
 	/**
 	 * Sets our main struct and passes it to the parent class.
 	 */
-	public this (HdyDialerButton* hdyDialerButton, bool ownedRef = false)
+	public this (HdyApplicationWindow* hdyApplicationWindow, bool ownedRef = false)
 	{
-		this.hdyDialerButton = hdyDialerButton;
-		super(cast(GtkButton*)hdyDialerButton, ownedRef);
+		this.hdyApplicationWindow = hdyApplicationWindow;
+		super(cast(GtkApplicationWindow*)hdyApplicationWindow, ownedRef);
 	}
 
 
 	/** */
 	public static GType getType()
 	{
-		return hdy_dialer_button_get_type();
+		return hdy_application_window_get_type();
 	}
 
 	/**
-	 * Create a new #HdyDialerButton which displays
-	 * @symbols. If
-	 * @symbols is %NULL no symbols will be displayed.
+	 * Creates a new #HdyApplicationWindow.
 	 *
-	 * Params:
-	 *     symbols = the symbols displayed on the #HdyDialerButton
+	 * Returns: a newly created #HdyApplicationWindow
 	 *
-	 * Returns: the newly created #HdyDialerButton widget
+	 * Since: 1.0
 	 *
 	 * Throws: ConstructionException GTK+ fails to create the object.
 	 */
-	public this(string symbols)
+	public this()
 	{
-		auto p = hdy_dialer_button_new(Str.toStringz(symbols));
+		auto __p = hdy_application_window_new();
 
-		if(p is null)
+		if(__p is null)
 		{
 			throw new ConstructionException("null returned by new");
 		}
 
-		this(cast(HdyDialerButton*) p);
-	}
-
-	/**
-	 * Get the #HdyDialerButton's digit.
-	 *
-	 * Returns: the button's digit
-	 */
-	public int getDigit()
-	{
-		return hdy_dialer_button_get_digit(hdyDialerButton);
-	}
-
-	/**
-	 * Get the #HdyDialerButton's symbols.
-	 *
-	 * Returns: the button's symbols.
-	 */
-	public string getSymbols()
-	{
-		return Str.toString(hdy_dialer_button_get_symbols(hdyDialerButton));
+		this(cast(HdyApplicationWindow*) __p, true);
 	}
 }

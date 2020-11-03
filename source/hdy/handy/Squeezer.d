@@ -78,14 +78,14 @@ public class Squeezer : Container, OrientableIF
 	 */
 	public this()
 	{
-		auto p = hdy_squeezer_new();
+		auto __p = hdy_squeezer_new();
 
-		if(p is null)
+		if(__p is null)
 		{
 			throw new ConstructionException("null returned by new");
 		}
 
-		this(cast(HdySqueezer*) p);
+		this(cast(HdySqueezer*) __p);
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class Squeezer : Container, OrientableIF
 	}
 
 	/**
-	 * Gets wether @self should interpolate its size on visible child change.
+	 * Gets whether @self should interpolate its size on visible child change.
 	 *
 	 * See hdy_squeezer_set_interpolate_size().
 	 *
@@ -171,14 +171,38 @@ public class Squeezer : Container, OrientableIF
 	 */
 	public Widget getVisibleChild()
 	{
-		auto p = hdy_squeezer_get_visible_child(hdySqueezer);
+		auto __p = hdy_squeezer_get_visible_child(hdySqueezer);
 
-		if(p is null)
+		if(__p is null)
 		{
 			return null;
 		}
 
-		return ObjectG.getDObject!(Widget)(cast(GtkWidget*) p);
+		return ObjectG.getDObject!(Widget)(cast(GtkWidget*) __p);
+	}
+
+	/**
+	 * Gets the #HdySqueezer:xalign property for @self.
+	 *
+	 * Returns: the xalign property
+	 *
+	 * Since: 1.0
+	 */
+	public float getXalign()
+	{
+		return hdy_squeezer_get_xalign(hdySqueezer);
+	}
+
+	/**
+	 * Gets the #HdySqueezer:yalign property for @self.
+	 *
+	 * Returns: the yalign property
+	 *
+	 * Since: 1.0
+	 */
+	public float getYalign()
+	{
+		return hdy_squeezer_get_yalign(hdySqueezer);
 	}
 
 	/**
@@ -258,5 +282,31 @@ public class Squeezer : Container, OrientableIF
 	public void setTransitionType(HdySqueezerTransitionType transition)
 	{
 		hdy_squeezer_set_transition_type(hdySqueezer, transition);
+	}
+
+	/**
+	 * Sets the #HdySqueezer:xalign property for @self.
+	 *
+	 * Params:
+	 *     xalign = the new xalign value, between 0 and 1
+	 *
+	 * Since: 1.0
+	 */
+	public void setXalign(float xalign)
+	{
+		hdy_squeezer_set_xalign(hdySqueezer, xalign);
+	}
+
+	/**
+	 * Sets the #HdySqueezer:yalign property for @self.
+	 *
+	 * Params:
+	 *     yalign = the new yalign value, between 0 and 1
+	 *
+	 * Since: 1.0
+	 */
+	public void setYalign(float yalign)
+	{
+		hdy_squeezer_set_yalign(hdySqueezer, yalign);
 	}
 }

@@ -23,5 +23,5 @@ license: start
 license: end
 
 srcDir: hdy
-copy: handy
+#copy: handy
 lookup: APILookupHandy.txt

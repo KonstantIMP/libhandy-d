@@ -20,9 +20,8 @@ module handy.PreferencesWindow;
 
 private import glib.ConstructionException;
 private import gobject.ObjectG;
-private import gtk.BuildableIF;
-private import gtk.BuildableT;
-private import gtk.Window;
+private import gtk.Widget;
+private import handy.Window;
 private import handy.c.functions;
 public  import handy.c.types;
 
@@ -53,7 +52,7 @@ public class PreferencesWindow : Window
 	public this (HdyPreferencesWindow* hdyPreferencesWindow, bool ownedRef = false)
 	{
 		this.hdyPreferencesWindow = hdyPreferencesWindow;
-		super(cast(GtkWindow*)hdyPreferencesWindow, ownedRef);
+		super(cast(HdyWindow*)hdyPreferencesWindow, ownedRef);
 	}
 
 
@@ -74,13 +73,91 @@ public class PreferencesWindow : Window
 	 */
 	public this()
 	{
-		auto p = hdy_preferences_window_new();
+		auto __p = hdy_preferences_window_new();
 
-		if(p is null)
+		if(__p is null)
 		{
 			throw new ConstructionException("null returned by new");
 		}
 
-		this(cast(HdyPreferencesWindow*) p);
+		this(cast(HdyPreferencesWindow*) __p);
+	}
+
+	/**
+	 * Closes the current subpage to return back to the preferences, if there is no
+	 * presented subpage, this does nothing.
+	 *
+	 * Since: 1.0
+	 */
+	public void closeSubpage()
+	{
+		hdy_preferences_window_close_subpage(hdyPreferencesWindow);
+	}
+
+	/**
+	 * Returns whether or not @self allows switching from a subpage to the
+	 * preferences via a swipe gesture.
+	 *
+	 * Returns: %TRUE if back swipe is enabled.
+	 *
+	 * Since: 1.0
+	 */
+	public bool getCanSwipeBack()
+	{
+		return hdy_preferences_window_get_can_swipe_back(hdyPreferencesWindow) != 0;
+	}
+
+	/**
+	 * Gets whether search is enabled for @self.
+	 *
+	 * Returns: whether search is enabled for @self.
+	 *
+	 * Since: 1.0
+	 */
+	public bool getSearchEnabled()
+	{
+		return hdy_preferences_window_get_search_enabled(hdyPreferencesWindow) != 0;
+	}
+
+	/**
+	 * Sets @subpage as the window's subpage and present it.
+	 * The transition can be cancelled by the user, in which case visible child will
+	 * change back to the previously visible child.
+	 *
+	 * Params:
+	 *     subpage = the subpage
+	 *
+	 * Since: 1.0
+	 */
+	public void presentSubpage(Widget subpage)
+	{
+		hdy_preferences_window_present_subpage(hdyPreferencesWindow, (subpage is null) ? null : subpage.getWidgetStruct());
+	}
+
+	/**
+	 * Sets whether or not @self allows switching from a subpage to the preferences
+	 * via a swipe gesture.
+	 *
+	 * Params:
+	 *     canSwipeBack = the new value
+	 *
+	 * Since: 1.0
+	 */
+	public void setCanSwipeBack(bool canSwipeBack)
+	{
+		hdy_preferences_window_set_can_swipe_back(hdyPreferencesWindow, canSwipeBack);
+	}
+
+	/**
+	 * Sets whether search is enabled for @self.
+	 *
+	 * Params:
+	 *     searchEnabled = %TRUE to enable search, %FALSE to disable it
+	 *
+	 * Since: 1.0
+	 */
+	public void setSearchEnabled(bool searchEnabled)
+	{
+		hdy_preferences_window_set_search_enabled(hdyPreferencesWindow, searchEnabled);
 	}
 }

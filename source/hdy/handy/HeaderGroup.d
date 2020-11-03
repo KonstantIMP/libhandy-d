@@ -21,11 +21,15 @@ module handy.HeaderGroup;
 private import glib.ConstructionException;
 private import glib.ListSG;
 private import gobject.ObjectG;
+private import gobject.Signals;
 private import gtk.BuildableIF;
 private import gtk.BuildableT;
-private import gtk.HeaderBar;
+private import gtk.HeaderBar : GtkdHeaderBar = HeaderBar;
+private import handy.HeaderBar : HdydHeaderBar = HeaderBar;
+private import handy.HeaderGroupChild;
 private import handy.c.functions;
 public  import handy.c.types;
+private import std.algorithm;
 
 
 /** */
@@ -60,6 +64,64 @@ public class HeaderGroup : ObjectG, BuildableIF
 	// add the Buildable capabilities
 	mixin BuildableT!(HdyHeaderGroup);
 
+	/**
+	 * Adds @header_bar to @self.
+	 * When the widget is destroyed or no longer referenced elsewhere, it will
+	 * be removed from the header group.
+	 *
+	 * Params:
+	 *     headerBar = the #GtkHeaderBar to add
+	 *
+	 * Since: 1.0
+	 */
+	public void addGtkHeaderBar(GtkdHeaderBar headerBar)
+	{
+		hdy_header_group_add_gtk_header_bar(hdyHeaderGroup, (headerBar is null) ? null : headerBar.getHeaderBarStruct());
+	}
+
+	/**
+	 * Adds @header_bar to @self.
+	 * When the widget is destroyed or no longer referenced elsewhere, it will
+	 * be removed from the header group.
+	 *
+	 * Params:
+	 *     headerBar = the #HdyHeaderBar to add
+	 *
+	 * Since: 1.0
+	 */
+	public void addHeaderBar(HdydHeaderBar headerBar)
+	{
+		hdy_header_group_add_header_bar(hdyHeaderGroup, (headerBar is null) ? null : headerBar.getHeaderBarStruct());
+	}
+
+	/**
+	 * Removes @header_bar from @self.
+	 *
+	 * Params:
+	 *     headerBar = the #GtkHeaderBar to remove
+	 *
+	 * Since: 1.0
+	 */
+	public void removeGtkHeaderBar(GtkdHeaderBar headerBar)
+	{
+		hdy_header_group_remove_gtk_header_bar(hdyHeaderGroup, (headerBar is null) ? null : headerBar.getHeaderBarStruct());
+	}
+
+	/**
+	 * Removes @header_bar from @self.
+	 *
+	 * Params:
+	 *     headerBar = the #HdyHeaderBar to remove
+	 *
+	 * Since: 1.0
+	 */
+	public void removeHeaderBar(HdydHeaderBar headerBar)
+	{
+		hdy_header_group_remove_header_bar(hdyHeaderGroup, (headerBar is null) ? null : headerBar.getHeaderBarStruct());
+	}
+
+	/**
+	 */
 
 	/** */
 	public static GType getType()
@@ -70,89 +132,110 @@ public class HeaderGroup : ObjectG, BuildableIF
 	/** */
 	public this()
 	{
-		auto p = hdy_header_group_new();
+		auto __p = hdy_header_group_new();
 
-		if(p is null)
+		if(__p is null)
 		{
 			throw new ConstructionException("null returned by new");
 		}
 
-		this(cast(HdyHeaderGroup*) p, true);
+		this(cast(HdyHeaderGroup*) __p, true);
 	}
 
 	/**
-	 * Adds a header bar to a #HdyHeaderGroup. The decoration layout of the
-	 * widgets will be edited depending on their position in the composite header
-	 * bar, the start widget displaying only the start of the user's decoration
-	 * layout and the end widget displaying only its end while widgets in the middle
-	 * won't display anything. A header bar can be set as having the focus to
-	 * display all the decorations. See gtk_header_bar_set_decoration_layout().
-	 *
-	 * When the widget is destroyed or no longer referenced elsewhere, it will
-	 * be removed from the header group.
+	 * Adds @header_group to @self.
+	 * When the nested group is no longer referenced elsewhere, it will be removed
+	 * from the header group.
 	 *
 	 * Params:
-	 *     headerBar = the #GtkHeaderBar to add
+	 *     headerGroup = the #HdyHeaderGroup to add
+	 *
+	 * Since: 1.0
 	 */
-	public void addHeaderBar(HeaderBar headerBar)
+	public void addHeaderGroup(HeaderGroup headerGroup)
 	{
-		hdy_header_group_add_header_bar(hdyHeaderGroup, (headerBar is null) ? null : headerBar.getHeaderBarStruct());
+		hdy_header_group_add_header_group(hdyHeaderGroup, (headerGroup is null) ? null : headerGroup.getHeaderGroupStruct());
 	}
 
 	/**
-	 * Returns: The currently focused header bar
+	 * Returns the list of children associated with @self.
+	 *
+	 * Returns: the #GSList of
+	 *     children. The list is owned by libhandy and should not be modified.
+	 *
+	 * Since: 1.0
 	 */
-	public HeaderBar getFocus()
+	public ListSG getChildren()
 	{
-		auto p = hdy_header_group_get_focus(hdyHeaderGroup);
+		auto __p = hdy_header_group_get_children(hdyHeaderGroup);
 
-		if(p is null)
+		if(__p is null)
 		{
 			return null;
 		}
 
-		return ObjectG.getDObject!(HeaderBar)(cast(GtkHeaderBar*) p);
+		return new ListSG(cast(GSList*) __p);
 	}
 
 	/**
-	 * Returns the list of headerbars associated with @self.
+	 * Gets whether the elements of the group should all receive the full decoration.
 	 *
-	 * Returns: a #GSList of
-	 *     headerbars. The list is owned by libhandy and should not be modified.
+	 * Returns: %TRUE if the elements of the group should all receive the full
+	 *     decoration, %FALSE otherwise.
+	 *
+	 * Since: 1.0
 	 */
-	public ListSG getHeaderBars()
+	public bool getDecorateAll()
 	{
-		auto p = hdy_header_group_get_header_bars(hdyHeaderGroup);
-
-		if(p is null)
-		{
-			return null;
-		}
-
-		return new ListSG(cast(GSList*) p);
+		return hdy_header_group_get_decorate_all(hdyHeaderGroup) != 0;
 	}
 
 	/**
-	 * Removes a widget from a #HdyHeaderGroup
+	 * Removes @child from @self.
 	 *
 	 * Params:
-	 *     headerBar = the #GtkHeaderBar to remove
+	 *     child = the #HdyHeaderGroupChild to remove
+	 *
+	 * Since: 1.0
 	 */
-	public void removeHeaderBar(HeaderBar headerBar)
+	public void removeChild(HeaderGroupChild child)
 	{
-		hdy_header_group_remove_header_bar(hdyHeaderGroup, (headerBar is null) ? null : headerBar.getHeaderBarStruct());
+		hdy_header_group_remove_child(hdyHeaderGroup, (child is null) ? null : child.getHeaderGroupChildStruct());
 	}
 
 	/**
-	 * Sets the the currently focused header bar. If @header_bar is %NULL, the
-	 * decoration will be spread as if the header bars of the group were only one,
-	 * otherwise @header_bar will be the only one to receive the decoration.
+	 * Removes a nested #HdyHeaderGroup from a #HdyHeaderGroup
 	 *
 	 * Params:
-	 *     headerBar = a #GtkHeaderBar of @self, or %NULL
+	 *     headerGroup = the #HdyHeaderGroup to remove
+	 *
+	 * Since: 1.0
 	 */
-	public void setFocus(HeaderBar headerBar)
+	public void removeHeaderGroup(HeaderGroup headerGroup)
 	{
-		hdy_header_group_set_focus(hdyHeaderGroup, (headerBar is null) ? null : headerBar.getHeaderBarStruct());
+		hdy_header_group_remove_header_group(hdyHeaderGroup, (headerGroup is null) ? null : headerGroup.getHeaderGroupStruct());
+	}
+
+	/**
+	 * Sets whether the elements of the group should all receive the full decoration.
+	 *
+	 * Params:
+	 *     decorateAll = whether the elements of the group should all receive the full decoration
+	 *
+	 * Since: 1.0
+	 */
+	public void setDecorateAll(bool decorateAll)
+	{
+		hdy_header_group_set_decorate_all(hdyHeaderGroup, decorateAll);
+	}
+
+	/**
+	 * This signal is emitted before updating the decoration layouts.
+	 *
+	 * Since: 1.0
+	 */
+	gulong addOnUpdateDecorationLayouts(void delegate(HeaderGroup) dlg, ConnectFlags connectFlags=cast(ConnectFlags)0)
+	{
+		return Signals.connect(this, "update-decoration-layouts", dlg, connectFlags ^ ConnectFlags.SWAPPED);
 	}
 }

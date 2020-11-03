@@ -21,6 +21,7 @@ module handy.ComboRow;
 private import gio.ListModelIF;
 private import glib.ConstructionException;
 private import gobject.ObjectG;
+private import gtk.Widget;
 private import handy.ActionRow;
 private import handy.c.functions;
 public  import handy.c.types;
@@ -73,14 +74,14 @@ public class ComboRow : ActionRow
 	 */
 	public this()
 	{
-		auto p = hdy_combo_row_new();
+		auto __p = hdy_combo_row_new();
 
-		if(p is null)
+		if(__p is null)
 		{
 			throw new ConstructionException("null returned by new");
 		}
 
-		this(cast(HdyComboRow*) p);
+		this(cast(HdyComboRow*) __p);
 	}
 
 	/**
@@ -98,8 +99,8 @@ public class ComboRow : ActionRow
 	 *         widgets for items to display in the list, or %NULL in case you also passed
 	 *         %NULL as @model
 	 *     createCurrentWidgetFunc = a function that creates
-	 *         widgets for items to display as the seleted item, or %NULL in case you also
-	 *         passed %NULL as @model
+	 *         widgets for items to display as the selected item, or %NULL in case you
+	 *         also passed %NULL as @model
 	 *     userData = user data passed to @create_list_widget_func and
 	 *         @create_current_widget_func
 	 *     userDataFreeFunc = function for freeing @user_data
@@ -120,8 +121,8 @@ public class ComboRow : ActionRow
 	 * items from @model. @self is updated whenever @model changes. If @model is
 	 * %NULL, @self is left empty.
 	 *
-	 * This is more conventient to use than hdy_combo_row_bind_model() if you want
-	 * to represent items of the model with names.
+	 * This is more convenient to use than hdy_combo_row_bind_model() if you want to
+	 * represent items of the model with names.
 	 *
 	 * Params:
 	 *     model = the #GListModel to be bound to @self
@@ -146,14 +147,14 @@ public class ComboRow : ActionRow
 	 */
 	public ListModelIF getModel()
 	{
-		auto p = hdy_combo_row_get_model(hdyComboRow);
+		auto __p = hdy_combo_row_get_model(hdyComboRow);
 
-		if(p is null)
+		if(__p is null)
 		{
 			return null;
 		}
 
-		return ObjectG.getDObject!(ListModelIF)(cast(GListModel*) p);
+		return ObjectG.getDObject!(ListModelIF)(cast(GListModel*) __p);
 	}
 
 	/**
@@ -190,7 +191,7 @@ public class ComboRow : ActionRow
 	 * items from @model. @self is updated whenever @model changes. If @model is
 	 * %NULL, @self is left empty.
 	 *
-	 * This is more conventient to use than hdy_combo_row_bind_name_model() if you
+	 * This is more convenient to use than hdy_combo_row_bind_name_model() if you
 	 * want to represent values of an enumeration with names.
 	 *
 	 * See hdy_enum_value_row_name().

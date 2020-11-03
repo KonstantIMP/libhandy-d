@@ -4,17 +4,16 @@
 
 # must start with wrap
 wrap: handy
-file: Handy-0.0.gir
+file: Handy-1.gir
 
 #
 # Types with minor patches
 #
 
 struct: ActionRow
-class: ActionRow
 noCode: activate
 code: start
-    alias activate = Widget.activate;
+	alias activate = Widget.activate;
 
 	/** */
 	public void activate()
@@ -23,29 +22,114 @@ code: start
 	}
 code: end
 
-struct: Arrows
-class: Arrows
-noCode: get_direction
+struct: HeaderGroupChild
+import: gtk.HeaderBar : GtkdHeaderBar = HeaderBar
+import: handy.HeaderBar : HdydHeaderBar = HeaderBar
+noCode: get_gtk_header_bar
+noCode: get_header_bar
 code: start
-    alias getDirection = Widget.getDirection;
+	/**
+	 * Gets the child #GtkHeaderBar.
+	 * Use hdy_header_group_child_get_child_type() to check the child type.
+	 *
+	 * Returns: the child #GtkHeaderBar, or %NULL in case of error.
+	 *
+	 * Since: 1.0
+	 */
+	public GtkdHeaderBar getGtkHeaderBar()
+	{
+		auto __p = hdy_header_group_child_get_gtk_header_bar(hdyHeaderGroupChild);
+
+		if(__p is null)
+		{
+			return null;
+		}
+
+		return ObjectG.getDObject!(GtkdHeaderBar)(cast(GtkHeaderBar*) __p);
+	}
 
 	/**
-	 * Get the direction the arrows point to
+	 * Gets the child #HdyHeaderBar.
+	 * Use hdy_header_group_child_get_child_type() to check the child type.
 	 *
-	 * Returns: the arrows direction
+	 * Returns: the child #HdyHeaderBar, or %NULL in case of error.
+	 *
+	 * Since: 1.0
 	 */
-	public HdyArrowsDirection getDirection()
+	public HdydHeaderBar getHeaderBar()
 	{
-		return hdy_arrows_get_direction(hdyArrows);
+		auto __p = hdy_header_group_child_get_header_bar(hdyHeaderGroupChild);
+
+		if(__p is null)
+		{
+			return null;
+		}
+
+		return ObjectG.getDObject!(HdydHeaderBar)(cast(HdyHeaderBar*) __p);
 	}
 code: end
 
-#
-# Major off-gen patches
-#
-struct: Dialog
-noCode: true
+struct: HeaderGroup
+import: gtk.HeaderBar : GtkdHeaderBar = HeaderBar
+import: handy.HeaderBar : HdydHeaderBar = HeaderBar
+noCode: add_gtk_header_bar
+noCode: add_header_bar
+noCode: remove_gtk_header_bar
+noCode: remove_header_bar
+code: start
+	/**
+	 * Adds @header_bar to @self.
+	 * When the widget is destroyed or no longer referenced elsewhere, it will
+	 * be removed from the header group.
+	 *
+	 * Params:
+	 *     headerBar = the #GtkHeaderBar to add
+	 *
+	 * Since: 1.0
+	 */
+	public void addGtkHeaderBar(GtkdHeaderBar headerBar)
+	{
+		hdy_header_group_add_gtk_header_bar(hdyHeaderGroup, (headerBar is null) ? null : headerBar.getHeaderBarStruct());
+	}
 
-# NOTE: Due to a bug (https://github.com/gtkd-developers/GtkD/issues/283) in GtkD, currently the dialer is not supported.
-struct: Dialer
-noCode: true
+	/**
+	 * Adds @header_bar to @self.
+	 * When the widget is destroyed or no longer referenced elsewhere, it will
+	 * be removed from the header group.
+	 *
+	 * Params:
+	 *     headerBar = the #HdyHeaderBar to add
+	 *
+	 * Since: 1.0
+	 */
+	public void addHeaderBar(HdydHeaderBar headerBar)
+	{
+		hdy_header_group_add_header_bar(hdyHeaderGroup, (headerBar is null) ? null : headerBar.getHeaderBarStruct());
+	}
+
+	/**
+	 * Removes @header_bar from @self.
+	 *
+	 * Params:
+	 *     headerBar = the #GtkHeaderBar to remove
+	 *
+	 * Since: 1.0
+	 */
+	public void removeGtkHeaderBar(GtkdHeaderBar headerBar)
+	{
+		hdy_header_group_remove_gtk_header_bar(hdyHeaderGroup, (headerBar is null) ? null : headerBar.getHeaderBarStruct());
+	}
+
+	/**
+	 * Removes @header_bar from @self.
+	 *
+	 * Params:
+	 *     headerBar = the #HdyHeaderBar to remove
+	 *
+	 * Since: 1.0
+	 */
+	public void removeHeaderBar(HdydHeaderBar headerBar)
+	{
+		hdy_header_group_remove_header_bar(hdyHeaderGroup, (headerBar is null) ? null : headerBar.getHeaderBarStruct());
+	}
+code: end

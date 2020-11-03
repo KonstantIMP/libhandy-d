@@ -21,10 +21,12 @@ module handy.ActionRow;
 private import glib.ConstructionException;
 private import glib.Str;
 private import gobject.ObjectG;
+private import gobject.Signals;
 private import gtk.Widget;
 private import handy.PreferencesRow;
 private import handy.c.functions;
 public  import handy.c.types;
+private import std.algorithm;
 
 
 /** */
@@ -84,27 +86,14 @@ public class ActionRow : PreferencesRow
 	 */
 	public this()
 	{
-		auto p = hdy_action_row_new();
+		auto __p = hdy_action_row_new();
 
-		if(p is null)
+		if(__p is null)
 		{
 			throw new ConstructionException("null returned by new");
 		}
 
-		this(cast(HdyActionRow*) p);
-	}
-
-	/**
-	 * Adds an action widget to @self.
-	 *
-	 * Params:
-	 *     widget = the action widget
-	 *
-	 * Since: 0.0.6
-	 */
-	public void addAction(Widget widget)
-	{
-		hdy_action_row_add_action(hdyActionRow, (widget is null) ? null : widget.getWidgetStruct());
+		this(cast(HdyActionRow*) __p);
 	}
 
 	/**
@@ -130,14 +119,14 @@ public class ActionRow : PreferencesRow
 	 */
 	public Widget getActivatableWidget()
 	{
-		auto p = hdy_action_row_get_activatable_widget(hdyActionRow);
+		auto __p = hdy_action_row_get_activatable_widget(hdyActionRow);
 
-		if(p is null)
+		if(__p is null)
 		{
 			return null;
 		}
 
-		return ObjectG.getDObject!(Widget)(cast(GtkWidget*) p);
+		return ObjectG.getDObject!(Widget)(cast(GtkWidget*) __p);
 	}
 
 	/**
@@ -155,25 +144,13 @@ public class ActionRow : PreferencesRow
 	/**
 	 * Gets the subtitle for @self.
 	 *
-	 * Returns: the subtitle for @self.
+	 * Returns: the subtitle for @self, or %NULL.
 	 *
 	 * Since: 0.0.6
 	 */
 	public string getSubtitle()
 	{
 		return Str.toString(hdy_action_row_get_subtitle(hdyActionRow));
-	}
-
-	/**
-	 * Gets the title for @self.
-	 *
-	 * Returns: the title for @self.
-	 *
-	 * Since: 0.0.6
-	 */
-	public override string getTitle()
-	{
-		return Str.toString(hdy_action_row_get_title(hdyActionRow));
 	}
 
 	/**
@@ -235,19 +212,6 @@ public class ActionRow : PreferencesRow
 	}
 
 	/**
-	 * Sets the title for @self.
-	 *
-	 * Params:
-	 *     title = the title
-	 *
-	 * Since: 0.0.6
-	 */
-	public override void setTitle(string title)
-	{
-		hdy_action_row_set_title(hdyActionRow, Str.toStringz(title));
-	}
-
-	/**
 	 * If true, an underline in the text of the title and subtitle labels indicates
 	 * the next character should be used for the mnemonic accelerator key.
 	 *
@@ -259,5 +223,15 @@ public class ActionRow : PreferencesRow
 	public override void setUseUnderline(bool useUnderline)
 	{
 		hdy_action_row_set_use_underline(hdyActionRow, useUnderline);
+	}
+
+	/**
+	 * This signal is emitted after the row has been activated.
+	 *
+	 * Since: 1.0
+	 */
+	gulong addOnActivated(void delegate(ActionRow) dlg, ConnectFlags connectFlags=cast(ConnectFlags)0)
+	{
+		return Signals.connect(this, "activated", dlg, connectFlags ^ ConnectFlags.SWAPPED);
 	}
 }

@@ -19,14 +19,16 @@
 module handy.ExpanderRow;
 
 private import glib.ConstructionException;
+private import glib.Str;
 private import gobject.ObjectG;
-private import handy.ActionRow;
+private import gtk.Widget;
+private import handy.PreferencesRow;
 private import handy.c.functions;
 public  import handy.c.types;
 
 
 /** */
-public class ExpanderRow : ActionRow
+public class ExpanderRow : PreferencesRow
 {
 	/** the main Gtk struct */
 	protected HdyExpanderRow* hdyExpanderRow;
@@ -51,7 +53,7 @@ public class ExpanderRow : ActionRow
 	public this (HdyExpanderRow* hdyExpanderRow, bool ownedRef = false)
 	{
 		this.hdyExpanderRow = hdyExpanderRow;
-		super(cast(HdyActionRow*)hdyExpanderRow, ownedRef);
+		super(cast(HdyPreferencesRow*)hdyExpanderRow, ownedRef);
 	}
 
 
@@ -72,14 +74,40 @@ public class ExpanderRow : ActionRow
 	 */
 	public this()
 	{
-		auto p = hdy_expander_row_new();
+		auto __p = hdy_expander_row_new();
 
-		if(p is null)
+		if(__p is null)
 		{
 			throw new ConstructionException("null returned by new");
 		}
 
-		this(cast(HdyExpanderRow*) p);
+		this(cast(HdyExpanderRow*) __p);
+	}
+
+	/**
+	 * Adds an action widget to @self.
+	 *
+	 * Params:
+	 *     widget = the action widget
+	 *
+	 * Since: 1.0
+	 */
+	public void addAction(Widget widget)
+	{
+		hdy_expander_row_add_action(hdyExpanderRow, (widget is null) ? null : widget.getWidgetStruct());
+	}
+
+	/**
+	 * Adds a prefix widget to @self.
+	 *
+	 * Params:
+	 *     widget = the prefix widget
+	 *
+	 * Since: 1.0
+	 */
+	public void addPrefix(Widget widget)
+	{
+		hdy_expander_row_add_prefix(hdyExpanderRow, (widget is null) ? null : widget.getWidgetStruct());
 	}
 
 	/**
@@ -101,6 +129,18 @@ public class ExpanderRow : ActionRow
 	}
 
 	/**
+	 * Gets the icon name for @self.
+	 *
+	 * Returns: the icon name for @self.
+	 *
+	 * Since: 1.0
+	 */
+	public string getIconName()
+	{
+		return Str.toString(hdy_expander_row_get_icon_name(hdyExpanderRow));
+	}
+
+	/**
 	 * Gets whether the switch enabling the expansion of @self is visible.
 	 *
 	 * Returns: whether the switch enabling the expansion of @self is visible.
@@ -110,6 +150,32 @@ public class ExpanderRow : ActionRow
 	public bool getShowEnableSwitch()
 	{
 		return hdy_expander_row_get_show_enable_switch(hdyExpanderRow) != 0;
+	}
+
+	/**
+	 * Gets the subtitle for @self.
+	 *
+	 * Returns: the subtitle for @self, or %NULL.
+	 *
+	 * Since: 1.0
+	 */
+	public string getSubtitle()
+	{
+		return Str.toString(hdy_expander_row_get_subtitle(hdyExpanderRow));
+	}
+
+	/**
+	 * Gets whether an embedded underline in the text of the title and subtitle
+	 * labels indicates a mnemonic. See hdy_expander_row_set_use_underline().
+	 *
+	 * Returns: %TRUE if an embedded underline in the title and subtitle labels
+	 *     indicates the mnemonic accelerator keys.
+	 *
+	 * Since: 1.0
+	 */
+	public override bool getUseUnderline()
+	{
+		return hdy_expander_row_get_use_underline(hdyExpanderRow) != 0;
 	}
 
 	/**
@@ -132,6 +198,19 @@ public class ExpanderRow : ActionRow
 	}
 
 	/**
+	 * Sets the icon name for @self.
+	 *
+	 * Params:
+	 *     iconName = the icon name
+	 *
+	 * Since: 1.0
+	 */
+	public void setIconName(string iconName)
+	{
+		hdy_expander_row_set_icon_name(hdyExpanderRow, Str.toStringz(iconName));
+	}
+
+	/**
 	 * Sets whether the switch enabling the expansion of @self is visible.
 	 *
 	 * Params:
@@ -142,5 +221,32 @@ public class ExpanderRow : ActionRow
 	public void setShowEnableSwitch(bool showEnableSwitch)
 	{
 		hdy_expander_row_set_show_enable_switch(hdyExpanderRow, showEnableSwitch);
+	}
+
+	/**
+	 * Sets the subtitle for @self.
+	 *
+	 * Params:
+	 *     subtitle = the subtitle
+	 *
+	 * Since: 1.0
+	 */
+	public void setSubtitle(string subtitle)
+	{
+		hdy_expander_row_set_subtitle(hdyExpanderRow, Str.toStringz(subtitle));
+	}
+
+	/**
+	 * If true, an underline in the text of the title and subtitle labels indicates
+	 * the next character should be used for the mnemonic accelerator key.
+	 *
+	 * Params:
+	 *     useUnderline = %TRUE if underlines in the text indicate mnemonics
+	 *
+	 * Since: 1.0
+	 */
+	public override void setUseUnderline(bool useUnderline)
+	{
+		hdy_expander_row_set_use_underline(hdyExpanderRow, useUnderline);
 	}
 }

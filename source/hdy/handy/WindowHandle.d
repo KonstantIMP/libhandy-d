@@ -16,101 +16,72 @@
  * along with d-handy; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110, USA
  */
-module handy.Dialog;
+module handy.WindowHandle;
 
 private import glib.ConstructionException;
 private import gobject.ObjectG;
 private import gtk.BuildableIF;
 private import gtk.BuildableT;
-private import gtk.Dialog : GtkDiag = Dialog;
+private import gtk.EventBox;
 private import gtk.Widget;
-private import gtk.Window;
 private import handy.c.functions;
 public  import handy.c.types;
 
 
 /** */
-public class Dialog : GtkDiag
+public class WindowHandle : EventBox
 {
 	/** the main Gtk struct */
-	protected HdyDialog* hdyDialog;
+	protected HdyWindowHandle* hdyWindowHandle;
 
 	/** Get the main Gtk struct */
-	public HdyDialog* getHandyDialogStruct(bool transferOwnership = false)
+	public HdyWindowHandle* getWindowHandleStruct(bool transferOwnership = false)
 	{
 		if (transferOwnership)
 			ownedRef = false;
-		return hdyDialog;
+		return hdyWindowHandle;
 	}
 
 	/** the main Gtk struct as a void* */
 	protected override void* getStruct()
 	{
-		return cast(void*)hdyDialog;
+		return cast(void*)hdyWindowHandle;
 	}
 
 	/**
 	 * Sets our main struct and passes it to the parent class.
 	 */
-	public this (HdyDialog* hdyDialog, bool ownedRef = false)
+	public this (HdyWindowHandle* hdyWindowHandle, bool ownedRef = false)
 	{
-		this.hdyDialog = hdyDialog;
-		super(cast(GtkDialog*)hdyDialog, ownedRef);
+		this.hdyWindowHandle = hdyWindowHandle;
+		super(cast(GtkEventBox*)hdyWindowHandle, ownedRef);
 	}
 
 
 	/** */
 	public static GType getType()
 	{
-		return hdy_dialog_get_type();
+		return hdy_window_handle_get_type();
 	}
 
 	/**
-	 * Create a #HdyDialog with #GtkWindow:transient-for set to parent
+	 * Creates a new #HdyWindowHandle.
 	 *
-	 * C Usage
-	 * |[<!-- language="C" -->
-	 * GtkWidget *dlg = hdy_dialog_new (GTK_WINDOW (main_window));
-	 * ]|
+	 * Returns: a newly created #HdyWindowHandle
 	 *
-	 * Vala Usage
-	 * |[<!-- language="Vala" -->
-	 * var dlg = new Hdy.Dialog (main_window);
-	 * ]|
-	 *
-	 * Python Usage
-	 * |[<!-- language="Python" -->
-	 * dlg = Handy.Dialog.new (main_window);
-	 * ]|
-	 *
-	 * Params:
-	 *     parent = #GtkWindow this dialog is a child of
-	 *
-	 * Since: 0.0.7
+	 * Since: 1.0
 	 *
 	 * Throws: ConstructionException GTK+ fails to create the object.
 	 */
-	public this(Window parent)
+	public this()
 	{
-		auto p = hdy_dialog_new((parent is null) ? null : parent.getWindowStruct());
+		auto __p = hdy_window_handle_new();
 
-		if(p is null)
+		if(__p is null)
 		{
 			throw new ConstructionException("null returned by new");
 		}
 
-		this(cast(HdyDialog*) p);
-	}
-
-	/**
-	 * Gets whether @self is narrow.
-	 *
-	 * Returns: %TRUE if @self is narrow, %FALSE otherwise.
-	 *
-	 * Since: 0.0.11
-	 */
-	public bool getNarrow()
-	{
-		return hdy_dialog_get_narrow(hdyDialog) != 0;
+		this(cast(HdyWindowHandle*) __p, true);
 	}
 }

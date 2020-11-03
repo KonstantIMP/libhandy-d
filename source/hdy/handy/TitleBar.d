@@ -23,6 +23,7 @@ private import gobject.ObjectG;
 private import gtk.Bin;
 private import gtk.BuildableIF;
 private import gtk.BuildableT;
+private import gtk.Widget;
 private import handy.c.functions;
 public  import handy.c.types;
 
@@ -72,18 +73,18 @@ public class TitleBar : Bin
 	 */
 	public this()
 	{
-		auto p = hdy_title_bar_new();
+		auto __p = hdy_title_bar_new();
 
-		if(p is null)
+		if(__p is null)
 		{
 			throw new ConstructionException("null returned by new");
 		}
 
-		this(cast(HdyTitleBar*) p);
+		this(cast(HdyTitleBar*) __p);
 	}
 
 	/**
-	 * Returns wether whether @self is in selection mode.
+	 * Returns whether whether @self is in selection mode.
 	 *
 	 * Returns: %TRUE if the title bar is in selection mode
 	 */

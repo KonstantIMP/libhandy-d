@@ -27,12 +27,14 @@ private import gtk.Container;
 private import gtk.OrientableIF;
 private import gtk.OrientableT;
 private import gtk.Widget;
+private import handy.SwipeableIF;
+private import handy.SwipeableT;
 private import handy.c.functions;
 public  import handy.c.types;
 
 
 /** */
-public class Leaflet : Container, OrientableIF
+public class Leaflet : Container, OrientableIF, SwipeableIF
 {
 	/** the main Gtk struct */
 	protected HdyLeaflet* hdyLeaflet;
@@ -63,6 +65,9 @@ public class Leaflet : Container, OrientableIF
 	// add the Orientable capabilities
 	mixin OrientableT!(HdyLeaflet);
 
+	// add the Swipeable capabilities
+	mixin SwipeableT!(HdyLeaflet);
+
 
 	/** */
 	public static GType getType()
@@ -73,21 +78,93 @@ public class Leaflet : Container, OrientableIF
 	/** */
 	public this()
 	{
-		auto p = hdy_leaflet_new();
+		auto __p = hdy_leaflet_new();
 
-		if(p is null)
+		if(__p is null)
 		{
 			throw new ConstructionException("null returned by new");
 		}
 
-		this(cast(HdyLeaflet*) p);
+		this(cast(HdyLeaflet*) __p);
+	}
+
+	/**
+	 * Gets the previous or next child that doesn't have 'navigatable' child
+	 * property set to %FALSE, or %NULL if it doesn't exist. This will be the same
+	 * widget hdy_leaflet_navigate() will navigate to.
+	 *
+	 * Params:
+	 *     direction = the direction
+	 *
+	 * Returns: the previous or next child, or
+	 *     %NULL if it doesn't exist.
+	 *
+	 * Since: 1.0
+	 */
+	public Widget getAdjacentChild(HdyNavigationDirection direction)
+	{
+		auto __p = hdy_leaflet_get_adjacent_child(hdyLeaflet, direction);
+
+		if(__p is null)
+		{
+			return null;
+		}
+
+		return ObjectG.getDObject!(Widget)(cast(GtkWidget*) __p);
+	}
+
+	/**
+	 * Returns whether the #HdyLeaflet allows swiping to the previous child.
+	 *
+	 * Returns: %TRUE if back swipe is enabled.
+	 *
+	 * Since: 0.0.12
+	 */
+	public bool getCanSwipeBack()
+	{
+		return hdy_leaflet_get_can_swipe_back(hdyLeaflet) != 0;
+	}
+
+	/**
+	 * Returns whether the #HdyLeaflet allows swiping to the next child.
+	 *
+	 * Returns: %TRUE if forward swipe is enabled.
+	 *
+	 * Since: 0.0.12
+	 */
+	public bool getCanSwipeForward()
+	{
+		return hdy_leaflet_get_can_swipe_forward(hdyLeaflet) != 0;
+	}
+
+	/**
+	 * Finds the child of @self with the name given as the argument. Returns %NULL
+	 * if there is no child with this name.
+	 *
+	 * Params:
+	 *     name = the name of the child to find
+	 *
+	 * Returns: the requested child of @self
+	 *
+	 * Since: 1.0
+	 */
+	public Widget getChildByName(string name)
+	{
+		auto __p = hdy_leaflet_get_child_by_name(hdyLeaflet, Str.toStringz(name));
+
+		if(__p is null)
+		{
+			return null;
+		}
+
+		return ObjectG.getDObject!(Widget)(cast(GtkWidget*) __p);
 	}
 
 	/**
 	 * Returns the amount of time (in milliseconds) that
 	 * transitions between children in @self will take.
 	 *
-	 * Returns: the mode transition duration
+	 * Returns: the child transition duration
 	 */
 	public uint getChildTransitionDuration()
 	{
@@ -106,24 +183,13 @@ public class Leaflet : Container, OrientableIF
 	}
 
 	/**
-	 * Gets the type of animation that will be used
-	 * for transitions between modes in @self.
+	 * Gets whether @self is folded.
 	 *
-	 * Returns: the current mode transition type of @self
+	 * Returns: whether @self is folded.
 	 */
-	public HdyLeafletChildTransitionType getChildTransitionType()
+	public bool getFolded()
 	{
-		return hdy_leaflet_get_child_transition_type(hdyLeaflet);
-	}
-
-	/**
-	 * Gets the fold of @self.
-	 *
-	 * Returns: the fold of @self.
-	 */
-	public HdyFold getFold()
-	{
-		return hdy_leaflet_get_fold(hdyLeaflet);
+		return hdy_leaflet_get_folded(hdyLeaflet) != 0;
 	}
 
 	/**
@@ -131,18 +197,18 @@ public class Leaflet : Container, OrientableIF
 	 * See hdy_leaflet_set_homogeneous().
 	 *
 	 * Params:
-	 *     fold = the fold
+	 *     folded = the fold
 	 *     orientation = the orientation
 	 *
 	 * Returns: whether @self is homogeneous for the given fold and orientation.
 	 */
-	public bool getHomogeneous(HdyFold fold, GtkOrientation orientation)
+	public bool getHomogeneous(bool folded, GtkOrientation orientation)
 	{
-		return hdy_leaflet_get_homogeneous(hdyLeaflet, fold, orientation) != 0;
+		return hdy_leaflet_get_homogeneous(hdyLeaflet, folded, orientation) != 0;
 	}
 
 	/**
-	 * Returns wether the #HdyLeaflet is set up to interpolate between
+	 * Returns whether the #HdyLeaflet is set up to interpolate between
 	 * the sizes of children on page switch.
 	 *
 	 * Returns: %TRUE if child sizes are interpolated
@@ -165,36 +231,87 @@ public class Leaflet : Container, OrientableIF
 
 	/**
 	 * Gets the type of animation that will be used
-	 * for transitions between modes in @self.
+	 * for transitions between modes and children in @self.
 	 *
-	 * Returns: the current mode transition type of @self
+	 * Returns: the current transition type of @self
+	 *
+	 * Since: 0.0.12
 	 */
-	public HdyLeafletModeTransitionType getModeTransitionType()
+	public HdyLeafletTransitionType getTransitionType()
 	{
-		return hdy_leaflet_get_mode_transition_type(hdyLeaflet);
+		return hdy_leaflet_get_transition_type(hdyLeaflet);
 	}
 
 	/**
-	 * Get the visible child widget.
+	 * Gets the visible child widget.
 	 *
 	 * Returns: the visible child widget
 	 */
 	public Widget getVisibleChild()
 	{
-		auto p = hdy_leaflet_get_visible_child(hdyLeaflet);
+		auto __p = hdy_leaflet_get_visible_child(hdyLeaflet);
 
-		if(p is null)
+		if(__p is null)
 		{
 			return null;
 		}
 
-		return ObjectG.getDObject!(Widget)(cast(GtkWidget*) p);
+		return ObjectG.getDObject!(Widget)(cast(GtkWidget*) __p);
 	}
 
-	/** */
+	/**
+	 * Gets the name of the currently visible child widget.
+	 *
+	 * Returns: the name of the visible child
+	 */
 	public string getVisibleChildName()
 	{
 		return Str.toString(hdy_leaflet_get_visible_child_name(hdyLeaflet));
+	}
+
+	/**
+	 * Switches to the previous or next child that doesn't have 'navigatable' child
+	 * property set to %FALSE, similar to performing a swipe gesture to go in
+	 * @direction.
+	 *
+	 * Params:
+	 *     direction = the direction
+	 *
+	 * Returns: %TRUE if visible child was changed, %FALSE otherwise.
+	 *
+	 * Since: 1.0
+	 */
+	public bool navigate(HdyNavigationDirection direction)
+	{
+		return hdy_leaflet_navigate(hdyLeaflet, direction) != 0;
+	}
+
+	/**
+	 * Sets whether or not @self allows switching to the previous child that has
+	 * 'navigatable' child property set to %TRUE via a swipe gesture
+	 *
+	 * Params:
+	 *     canSwipeBack = the new value
+	 *
+	 * Since: 0.0.12
+	 */
+	public void setCanSwipeBack(bool canSwipeBack)
+	{
+		hdy_leaflet_set_can_swipe_back(hdyLeaflet, canSwipeBack);
+	}
+
+	/**
+	 * Sets whether or not @self allows switching to the next child that has
+	 * 'navigatable' child property set to %TRUE via a swipe gesture.
+	 *
+	 * Params:
+	 *     canSwipeForward = the new value
+	 *
+	 * Since: 0.0.12
+	 */
+	public void setCanSwipeForward(bool canSwipeForward)
+	{
+		hdy_leaflet_set_can_swipe_forward(hdyLeaflet, canSwipeForward);
 	}
 
 	/**
@@ -210,22 +327,6 @@ public class Leaflet : Container, OrientableIF
 	}
 
 	/**
-	 * Sets the type of animation that will be used for
-	 * transitions between children in @self.
-	 *
-	 * The transition type can be changed without problems
-	 * at runtime, so it is possible to change the animation
-	 * based on the mode that is about to become current.
-	 *
-	 * Params:
-	 *     transition = the new transition type
-	 */
-	public void setChildTransitionType(HdyLeafletChildTransitionType transition)
-	{
-		hdy_leaflet_set_child_transition_type(hdyLeaflet, transition);
-	}
-
-	/**
 	 * Sets the #HdyLeaflet to be homogeneous or not for the given fold and orientation.
 	 * If it is homogeneous, the #HdyLeaflet will request the same
 	 * width or height for all its children depending on the orientation.
@@ -233,19 +334,19 @@ public class Leaflet : Container, OrientableIF
 	 * when a different child becomes visible.
 	 *
 	 * Params:
-	 *     fold = the fold
+	 *     folded = the fold
 	 *     orientation = the orientation
 	 *     homogeneous = %TRUE to make @self homogeneous
 	 */
-	public void setHomogeneous(HdyFold fold, GtkOrientation orientation, bool homogeneous)
+	public void setHomogeneous(bool folded, GtkOrientation orientation, bool homogeneous)
 	{
-		hdy_leaflet_set_homogeneous(hdyLeaflet, fold, orientation, homogeneous);
+		hdy_leaflet_set_homogeneous(hdyLeaflet, folded, orientation, homogeneous);
 	}
 
 	/**
 	 * Sets whether or not @self will interpolate its size when
 	 * changing the visible child. If the #HdyLeaflet:interpolate-size
-	 * property is set to %TRUE, @stack will interpolate its size between
+	 * property is set to %TRUE, @self will interpolate its size between
 	 * the current one and the one it'll take after changing the
 	 * visible child, according to the set transition duration.
 	 *
@@ -270,28 +371,45 @@ public class Leaflet : Container, OrientableIF
 	}
 
 	/**
-	 * Sets the type of animation that will be used for
-	 * transitions between modes in @self.
+	 * Sets the type of animation that will be used for transitions between modes
+	 * and children in @self.
 	 *
-	 * The transition type can be changed without problems
-	 * at runtime, so it is possible to change the animation
-	 * based on the mode that is about to become current.
+	 * The transition type can be changed without problems at runtime, so it is
+	 * possible to change the animation based on the mode or child that is about to
+	 * become current.
 	 *
 	 * Params:
 	 *     transition = the new transition type
+	 *
+	 * Since: 0.0.12
 	 */
-	public void setModeTransitionType(HdyLeafletModeTransitionType transition)
+	public void setTransitionType(HdyLeafletTransitionType transition)
 	{
-		hdy_leaflet_set_mode_transition_type(hdyLeaflet, transition);
+		hdy_leaflet_set_transition_type(hdyLeaflet, transition);
 	}
 
-	/** */
+	/**
+	 * Makes @visible_child visible using a transition determined by
+	 * HdyLeaflet:transition-type and HdyLeaflet:child-transition-duration. The
+	 * transition can be cancelled by the user, in which case visible child will
+	 * change back to the previously visible child.
+	 *
+	 * Params:
+	 *     visibleChild = the new child
+	 */
 	public void setVisibleChild(Widget visibleChild)
 	{
 		hdy_leaflet_set_visible_child(hdyLeaflet, (visibleChild is null) ? null : visibleChild.getWidgetStruct());
 	}
 
-	/** */
+	/**
+	 * Makes the child with the name @name visible.
+	 *
+	 * See hdy_leaflet_set_visible_child() for more details.
+	 *
+	 * Params:
+	 *     name = the name of a child
+	 */
 	public void setVisibleChildName(string name)
 	{
 		hdy_leaflet_set_visible_child_name(hdyLeaflet, Str.toStringz(name));

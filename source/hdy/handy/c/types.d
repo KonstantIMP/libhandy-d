@@ -26,27 +26,6 @@ public import gtk.c.types;
 public import pango.c.types;
 
 
-public enum HdyArrowsDirection
-{
-	/**
-	 * Arrows point upwards
-	 */
-	UP = 0,
-	/**
-	 * Arrows point to the left
-	 */
-	DOWN = 1,
-	/**
-	 * Arrows point to the right
-	 */
-	LEFT = 2,
-	/**
-	 * Arrows point downwards
-	 */
-	RIGHT = 3,
-}
-alias HdyArrowsDirection ArrowsDirection;
-
 public enum HdyCenteringPolicy
 {
 	/**
@@ -61,94 +40,97 @@ public enum HdyCenteringPolicy
 alias HdyCenteringPolicy CenteringPolicy;
 
 /**
- * Represents the fold of widgets and other objects which can be switched
- * between folded and unfolded state on the fly, like HdyLeaflet.
- */
-public enum HdyFold
-{
-	/**
-	 * The element isn't folded
-	 */
-	UNFOLDED = 0,
-	/**
-	 * The element is folded
-	 */
-	FOLDED = 1,
-}
-alias HdyFold Fold;
-
-/**
- * These enumeration values describe the possible transitions between pages in a
- * #HdyLeaflet widget.
+ * This enumeration value describes the possible transitions between children
+ * in a #HdyDeck widget.
  *
  * New values may be added to this enumeration over time.
+ *
+ * Since: 1.0
  */
-public enum HdyLeafletChildTransitionType
+public enum HdyDeckTransitionType
 {
 	/**
-	 * No transition
+	 * Cover the old page or uncover the new page, sliding from or towards the end according to orientation, text direction and children order
 	 */
-	NONE = 0,
+	OVER = 0,
 	/**
-	 * A cross-fade
+	 * Uncover the new page or cover the old page, sliding from or towards the start according to orientation, text direction and children order
 	 */
-	CROSSFADE = 1,
+	UNDER = 1,
 	/**
 	 * Slide from left, right, up or down according to the orientation, text direction and the children order
 	 */
 	SLIDE = 2,
+}
+alias HdyDeckTransitionType DeckTransitionType;
+
+/**
+ * This enumeration value describes the child types handled by #HdyHeaderGroup.
+ *
+ * New values may be added to this enumeration over time.
+ *
+ * Since: 1.0
+ */
+public enum HdyHeaderGroupChildType
+{
+	/**
+	 * The child is a #HdyHeaderBar
+	 */
+	HEADER_BAR = 0,
+	/**
+	 * The child is a #GtkHeaderBar
+	 */
+	GTK_HEADER_BAR = 1,
+	/**
+	 * The child is a #HdyHeaderGroup
+	 */
+	HEADER_GROUP = 2,
+}
+alias HdyHeaderGroupChildType HeaderGroupChildType;
+
+/**
+ * This enumeration value describes the possible transitions between modes and
+ * children in a #HdyLeaflet widget.
+ *
+ * New values may be added to this enumeration over time.
+ *
+ * Since: 0.0.12
+ */
+public enum HdyLeafletTransitionType
+{
 	/**
 	 * Cover the old page or uncover the new page, sliding from or towards the end according to orientation, text direction and children order
 	 */
-	OVER = 3,
+	OVER = 0,
 	/**
 	 * Uncover the new page or cover the old page, sliding from or towards the start according to orientation, text direction and children order
 	 */
-	UNDER = 4,
-}
-alias HdyLeafletChildTransitionType LeafletChildTransitionType;
-
-/**
- * These enumeration values describe the possible transitions between pages in a
- * #HdyLeaflet widget.
- *
- * New values may be added to this enumeration over time.
- */
-public enum HdyLeafletModeTransitionType
-{
-	/**
-	 * No transition
-	 */
-	NONE = 0,
+	UNDER = 1,
 	/**
 	 * Slide from left, right, up or down according to the orientation, text direction and the children order
 	 */
-	SLIDE = 1,
+	SLIDE = 2,
 }
-alias HdyLeafletModeTransitionType LeafletModeTransitionType;
+alias HdyLeafletTransitionType LeafletTransitionType;
 
 /**
- * These enumeration values describe the possible page indicator styles in a
- * #HdyPaginator widget.
+ * Represents direction of a swipe navigation gesture in #HdyDeck and
+ * #HdyLeaflet.
  *
- * New values may be added to this enumeration over time.
+ * Since: 1.0
  */
-public enum HdyPaginatorIndicatorStyle
+public enum HdyNavigationDirection
 {
 	/**
-	 * No indicators
+	 * Corresponds to start or top, depending on orientation and text direction
 	 */
-	NONE = 0,
+	BACK = 0,
 	/**
-	 * Each page is represented by a dot. Active dot gradually becomes larger and more opaque.
+	 * Corresponds to end or bottom, depending on orientation and text direction
 	 */
-	DOTS = 1,
-	/**
-	 * Each page is represented by a thin and long line, and active view is shown with another line that moves between them
-	 */
-	LINES = 2,
+	FORWARD = 1,
 }
-alias HdyPaginatorIndicatorStyle PaginatorIndicatorStyle;
+alias HdyNavigationDirection NavigationDirection;
 
 /**
  * These enumeration values describe the possible transitions between children
@@ -197,24 +179,51 @@ struct HdyActionRowClass
 	GtkListBoxRowClass parentClass;
 	/** */
 	extern(C) void function(HdyActionRow* self) activate;
+	void*[4] padding;
 }
 
-struct HdyArrows
+struct HdyApplicationWindow
 {
-	GtkDrawingArea parentInstance;
+	GtkApplicationWindow parentInstance;
 }
 
-struct HdyArrowsClass
+struct HdyApplicationWindowClass
 {
-	/**
-	 * The parent class
-	 */
+	GtkApplicationWindowClass parentClass;
+	void*[4] padding;
+}
+
+struct HdyAvatar;
+
+struct HdyAvatarClass
+{
 	GtkDrawingAreaClass parentClass;
 }
 
-struct HdyColumn;
+struct HdyCarousel;
 
-struct HdyColumnClass
+struct HdyCarouselClass
+{
+	GtkEventBoxClass parentClass;
+}
+
+struct HdyCarouselIndicatorDots;
+
+struct HdyCarouselIndicatorDotsClass
+{
+	GtkDrawingAreaClass parentClass;
+}
+
+struct HdyCarouselIndicatorLines;
+
+struct HdyCarouselIndicatorLinesClass
+{
+	GtkDrawingAreaClass parentClass;
+}
+
+struct HdyClamp;
+
+struct HdyClampClass
 {
 	GtkBinClass parentClass;
 }
@@ -230,58 +239,21 @@ struct HdyComboRowClass
 	 * The parent class
 	 */
 	HdyActionRowClass parentClass;
+	void*[4] padding;
 }
 
-struct HdyDialer
+struct HdyDeck
 {
-	GtkBin parentInstance;
+	GtkContainer parentInstance;
 }
 
-struct HdyDialerButton
-{
-	GtkButton parentInstance;
-}
-
-struct HdyDialerButtonClass
-{
-	GtkButtonClass parentClass;
-}
-
-struct HdyDialerClass
+struct HdyDeckClass
 {
 	/**
 	 * The parent class
 	 */
-	GtkBinClass parentClass;
-	/** */
-	extern(C) void function(HdyDialer* self, const(char)* number) submitted;
-}
-
-struct HdyDialerCycleButton
-{
-	HdyDialerButton parentInstance;
-}
-
-struct HdyDialerCycleButtonClass
-{
-	/**
-	 * The parent classqn
-	 */
-	HdyDialerButtonClass parentClass;
-	/** */
-	extern(C) void function(HdyDialerCycleButton* self) cycleStart;
-	/** */
-	extern(C) void function(HdyDialerCycleButton* self) cycleEnd;
-}
-
-struct HdyDialog
-{
-	GtkDialog parentInstance;
-}
-
-struct HdyDialogClass
-{
-	GtkDialogClass parentClass;
+	GtkContainerClass parentClass;
+	void*[4] padding;
 }
 
 struct HdyEnumValueObject;
@@ -293,7 +265,7 @@ struct HdyEnumValueObjectClass
 
 struct HdyExpanderRow
 {
-	HdyActionRow parentInstance;
+	HdyPreferencesRow parentInstance;
 }
 
 struct HdyExpanderRowClass
@@ -301,7 +273,8 @@ struct HdyExpanderRowClass
 	/**
 	 * The parent class
 	 */
-	HdyActionRowClass parentClass;
+	HdyPreferencesRowClass parentClass;
+	void*[4] padding;
 }
 
 struct HdyHeaderBar
@@ -315,19 +288,35 @@ struct HdyHeaderBarClass
 	 * The parent class
 	 */
 	GtkContainerClass parentClass;
+	void*[4] padding;
 }
 
-struct HdyHeaderGroup
+struct HdyHeaderGroup;
+
+struct HdyHeaderGroupChild;
+
+struct HdyHeaderGroupChildClass
 {
-	GObject parentInstance;
+	GObjectClass parentClass;
 }
 
 struct HdyHeaderGroupClass
 {
+	GObjectClass parentClass;
+}
+
+struct HdyKeypad
+{
+	GtkBin parentInstance;
+}
+
+struct HdyKeypadClass
+{
 	/**
 	 * The parent class
 	 */
-	GObjectClass parentClass;
+	GtkBinClass parentClass;
+	void*[4] padding;
 }
 
 struct HdyLeaflet
@@ -341,20 +330,12 @@ struct HdyLeafletClass
 	 * The parent class
 	 */
 	GtkContainerClass parentClass;
-	/** */
-	extern(C) void function(HdyLeaflet* self) todo;
-}
-
-struct HdyPaginator;
-
-struct HdyPaginatorClass
-{
-	GtkEventBoxClass parentClass;
+	void*[4] padding;
 }
 
 struct HdyPreferencesGroup
 {
-	GtkBox parentInstance;
+	GtkBin parentInstance;
 }
 
 struct HdyPreferencesGroupClass
@@ -362,12 +343,13 @@ struct HdyPreferencesGroupClass
 	/**
 	 * The parent class
 	 */
-	GtkBoxClass parentClass;
+	GtkBinClass parentClass;
+	void*[4] padding;
 }
 
 struct HdyPreferencesPage
 {
-	GtkScrolledWindow parentInstance;
+	GtkBin parentInstance;
 }
 
 struct HdyPreferencesPageClass
@@ -375,7 +357,8 @@ struct HdyPreferencesPageClass
 	/**
 	 * The parent class
 	 */
-	GtkScrolledWindowClass parentClass;
+	GtkBinClass parentClass;
+	void*[4] padding;
 }
 
 struct HdyPreferencesRow
@@ -389,11 +372,12 @@ struct HdyPreferencesRowClass
 	 * The parent class
 	 */
 	GtkListBoxRowClass parentClass;
+	void*[4] padding;
 }
 
 struct HdyPreferencesWindow
 {
-	GtkWindow parentInstance;
+	HdyWindow parentInstance;
 }
 
 struct HdyPreferencesWindowClass
@@ -401,7 +385,8 @@ struct HdyPreferencesWindowClass
 	/**
 	 * The parent class
 	 */
-	GtkWindowClass parentClass;
+	HdyWindowClass parentClass;
+	void*[4] padding;
 }
 
 struct HdySearchBar
@@ -412,19 +397,84 @@ struct HdySearchBar
 struct HdySearchBarClass
 {
 	GtkBinClass parentClass;
+	void*[4] padding;
 }
 
-struct HdySqueezer
-{
-	GtkContainer parentInstance;
-}
+struct HdySqueezer;
 
 struct HdySqueezerClass
 {
-	/**
-	 * The parent class
-	 */
 	GtkContainerClass parentClass;
+}
+
+struct HdySwipeGroup;
+
+struct HdySwipeGroupClass
+{
+	GObjectClass parentClass;
+}
+
+struct HdySwipeTracker;
+
+struct HdySwipeTrackerClass
+{
+	GObjectClass parentClass;
+}
+
+struct HdySwipeable;
+
+/**
+ * An interface for swipeable widgets.
+ *
+ * Since: 1.0
+ */
+struct HdySwipeableInterface
+{
+	/**
+	 * The parent interface.
+	 */
+	GTypeInterface parent;
+	/** */
+	extern(C) void function(HdySwipeable* self, uint index, long duration) switchChild;
+	/**
+	 *
+	 * Params:
+	 *     self = a #HdySwipeable
+	 * Returns: the swipe tracker
+	 */
+	extern(C) HdySwipeTracker* function(HdySwipeable* self) getSwipeTracker;
+	/**
+	 *
+	 * Params:
+	 *     self = a #HdySwipeable
+	 * Returns: the swipe distance in pixels
+	 */
+	extern(C) double function(HdySwipeable* self) getDistance;
+	/**
+	 *
+	 * Params:
+	 *     self = a #HdySwipeable
+	 * Returns: the snap points of
+	 *     @self. The array must be freed with g_free().
+	 */
+	extern(C) double* function(HdySwipeable* self, int* nSnapPoints) getSnapPoints;
+	/**
+	 *
+	 * Params:
+	 *     self = a #HdySwipeable
+	 * Returns: the current progress, unitless
+	 */
+	extern(C) double function(HdySwipeable* self) getProgress;
+	/**
+	 *
+	 * Params:
+	 *     self = a #HdySwipeable
+	 * Returns: the cancel progress, unitless
+	 */
+	extern(C) double function(HdySwipeable* self) getCancelProgress;
+	/** */
+	extern(C) void function(HdySwipeable* self, HdyNavigationDirection navigationDirection, int isDrag, GdkRectangle* rect) getSwipeArea;
+	void*[4] padding;
 }
 
 struct HdyTitleBar;
@@ -441,15 +491,9 @@ struct HdyValueObjectClass
 	GObjectClass parentClass;
 }
 
-struct HdyViewSwitcher
-{
-	GtkBox parentInstance;
-}
+struct HdyViewSwitcher;
 
-struct HdyViewSwitcherBar
-{
-	GtkBin parentInstance;
-}
+struct HdyViewSwitcherBar;
 
 struct HdyViewSwitcherBarClass
 {
@@ -458,8 +502,46 @@ struct HdyViewSwitcherBarClass
 
 struct HdyViewSwitcherClass
 {
-	GtkBoxClass parentClass;
+	GtkBinClass parentClass;
 }
+
+struct HdyViewSwitcherTitle;
+
+struct HdyViewSwitcherTitleClass
+{
+	GtkBinClass parentClass;
+}
+
+struct HdyWindow
+{
+	GtkWindow parentInstance;
+}
+
+struct HdyWindowClass
+{
+	GtkWindowClass parentClass;
+	void*[4] padding;
+}
+
+struct HdyWindowHandle;
+
+struct HdyWindowHandleClass
+{
+	GtkEventBoxClass parentClass;
+}
+
+/**
+ * The returned #GdkPixbuf is expected to be square with width and height set
+ * to @size. The image is cropped to a circle without any scaling or transformation.
+ *
+ * Params:
+ *     size = the required size of the avatar
+ *     userData = user data
+ *
+ * Returns: the #GdkPixbuf to use as a custom avatar
+ *     or %NULL to fallback to the generated avatar.
+ */
+public alias extern(C) GdkPixbuf* function(int size, void* userData) HdyAvatarImageLoadFunc;
 
 /**
  * Called for combo rows that are bound to an enumeration with
