@@ -1,0 +1,15 @@
+{
+    "name": "libhandy-d",
+    "authors": [
+        "clipsey",
+        "webfreak",
+        "KonstantIMP"
+    ],
+    "versions": ["0.0.1"],
+    "license" : "LGPL-3.0",
+    "sourcePaths": ["source/hdy"],
+    "importPaths": ["source/hdy"],
+    "dependencies": {"gtk-d": "~>3.9.0"},
+    "description": "D bindings for libhandy",
+    "copyright" : "Copyright © 2019-2020 clipsey, webfreak, KonstantIMP"
+}

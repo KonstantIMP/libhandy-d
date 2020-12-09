@@ -1,8 +1,0 @@
-name "d-handy1"
-description "D bindings for libhandy v1"
-authors "clipsey" "webfreak"
-copyright "Copyright © 2019-2020 clipsey, webfreak"
-license "LGPL-3.0"
-dependency "gtk-d" version="~>3.9"
-sourcePaths "source/hdy"
-importPaths "source/hdy"

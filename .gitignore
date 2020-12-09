@@ -14,3 +14,4 @@ docs/
 *.lst
 dub.selections.json
 example/example
+gir-to-d/
