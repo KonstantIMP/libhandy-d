@@ -31,6 +31,9 @@ else
 
 shared static this()
 {
+	// handy
+	Linker.link(hdy_init, "hdy_init", LIBRARY_HANDY);
+
 	// handy.ActionRow
 
 	Linker.link(hdy_action_row_get_type, "hdy_action_row_get_type", LIBRARY_HANDY);
@@ -445,6 +448,9 @@ shared static this()
 
 __gshared extern(C)
 {
+	// handy
+
+	void function() c_hdy_init;
 
 	// handy.ActionRow
 
@@ -858,6 +864,9 @@ __gshared extern(C)
 	GtkWidget* function() c_hdy_window_handle_new;
 }
 
+// handy
+
+alias c_hdy_init hdy_init;
 
 // handy.ActionRow
 
