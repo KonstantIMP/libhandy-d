@@ -1,2 +1,7 @@
 # d-handy1
-Bindings for libhandy 1.0 for D using GtkD.
+
+libhandy binding for DLang and GTKd (currently handy version is 1.0)
+
+***Warning*** The library haven`t supported compiling by ldc yet
+
+
