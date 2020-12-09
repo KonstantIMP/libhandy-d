@@ -15,3 +15,4 @@ docs/
 dub.selections.json
 example/example
 gir-to-d/
+example/libhandy_d_example
