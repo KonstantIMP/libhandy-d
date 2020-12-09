@@ -1,0 +1,12 @@
+{
+	"authors": [
+		"KonstantIMP"
+	],
+	"copyright": "Copyright © 2020, KonstantIMP",
+	"dependencies": {
+		"libhandy-d": "~master"
+	},
+	"description": "A simple application to show How to work with libhandy-d",
+	"license": "LGPL-3.0",
+	"name": "libhandy_d_example"
+}
