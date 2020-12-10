@@ -112,31 +112,6 @@ public class ValueObject : ObjectG
 	}
 
 	/**
-	 * Creates a new #HdyValueObject. This is a convenience method to create a
-	 * #HdyValueObject that stores a string taking ownership of it.
-	 *
-	 * Params:
-	 *     string_ = the string to store
-	 *
-	 * Returns: a new #HdyValueObject
-	 *
-	 * Since: 0.0.8
-	 *
-	 * Throws: ConstructionException GTK+ fails to create the object.
-	 */
-	public this(string string_)
-	{
-		auto __p = hdy_value_object_new_take_string(Str.toStringz(string_));
-
-		if(__p is null)
-		{
-			throw new ConstructionException("null returned by new_take_string");
-		}
-
-		this(cast(HdyValueObject*) __p, true);
-	}
-
-	/**
 	 * Copy data from the contained #GValue into @dest.
 	 *
 	 * Params:
