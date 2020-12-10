@@ -8,13 +8,9 @@ import handy.CarouselIndicatorLines;
 import handy.Carousel;
 import handy.Keypad;
 import handy.Avatar;
-import handy.Handy;
-
-
 
 int main(string [] args) {
 	Main.init(args);
-	Handy.init();
 
 	Application test_app = new Application("org.libhandy.d.test.org", GApplicationFlags.FLAGS_NONE);
 	
